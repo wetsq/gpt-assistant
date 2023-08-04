@@ -1,0 +1,36 @@
+# fly.toml app configuration file generated for gpt-ai-assistant on 2023-07-31T15:40:27+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "gpt-ai-assistant"
+primary_region = "ams"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[build.args]
+  SHOPIFY_API_KEY = "2076eca673b3b5a64857f85926f47c81"
+
+[env]
+  PORT = "8081"
+  HOST = "https://gpt-ai-assistant.fly.dev"
+  SHOPIFY_API_KEY = "2076eca673b3b5a64857f85926f47c81"
+  SCOPES = "read_products"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8081
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
